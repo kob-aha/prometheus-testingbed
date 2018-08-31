@@ -26,6 +26,7 @@ Vagrant.configure("2") do |config|
   # NOTE: This will enable public access to the opened port
   config.vm.network "forwarded_port", guest: 9090, host: 9090
   config.vm.network "forwarded_port", guest: 9100, host: 9100
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -67,7 +68,7 @@ Vagrant.configure("2") do |config|
     export PROMETHEUS_VERSION=2.3.2
 
     yum install -y docker git glibc-static golang wget
-    systemctl start docker
+    service start docker
 
     # Build mongoDB exporter
     pushd /vagrant/mongodb_exporter
@@ -89,5 +90,6 @@ Vagrant.configure("2") do |config|
       | tar -xvz --strip-components=1 -C /opt/prometheus
   SHELL
 
-  config.vm.provision "shell", path: "run-prometheus.sh", run: "always"
+  config.vm.provision "shell", path: "provisions/grafana.sh"
+  config.vm.provision "shell", path: "provisions/prometheus.sh", run: "always"
 end
