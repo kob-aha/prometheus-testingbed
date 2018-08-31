@@ -1,0 +1,5 @@
+node_exporter/*
+mongodb_exporter/mongodb_exporter
+.vagrant/
+
+!node_exporter/.gitkeep
