@@ -12,7 +12,8 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "centos-7-minimal-packer"
+  #config.vm.box = "centos-7-minimal-packer"
+  config.vm.box = "centos65-x86_64-20140116"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -24,6 +25,7 @@ Vagrant.configure("2") do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # NOTE: This will enable public access to the opened port
   config.vm.network "forwarded_port", guest: 9090, host: 9090
+  config.vm.network "forwarded_port", guest: 9100, host: 9100
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine and only allow access
@@ -49,28 +51,22 @@ Vagrant.configure("2") do |config|
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  # config.vm.provider "virtualbox" do |vb|
+  #config.vm.provider "virtualbox" do |vb|
   #   # Display the VirtualBox GUI when booting the machine
   #   vb.gui = true
   #
   #   # Customize the amount of memory on the VM:
   #   vb.memory = "1024"
-  # end
+  #end
   #
   # View the documentation for the provider you are using for more
   # information on available options.
 
-  # Enable provisioning with a shell script. Additional provisioners such as
-  # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
-  # documentation for more information about their specific syntax and use.
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   apt-get update
-  #   apt-get install -y apache2
-  # SHELL
   config.vm.provision "shell", inline: <<-SHELL
-    EXPORTER_VERSION=0.16.0
+    export EXPORTER_VERSION=0.16.0
+    export PROMETHEUS_VERSION=2.3.2
 
-    yum install -y docker git glibc-static golang 
+    yum install -y docker git glibc-static golang wget
     systemctl start docker
 
     # Build mongoDB exporter
@@ -85,19 +81,13 @@ Vagrant.configure("2") do |config|
     make && cp node_exporter /vagrant/node_exporter
     popd
     
-    curl -L https://github.com/prometheus/node_exporter/releases/download/v${EXPORTER_VERSION}/node_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
+    wget -O - https://github.com/prometheus/node_exporter/releases/download/v${EXPORTER_VERSION}/node_exporter-${EXPORTER_VERSION}.linux-amd64.tar.gz \
       | tar -xvz --strip-components=1 -C /vagrant/node_exporter/
     
-    # Start prometheus
-    #docker run --name prometheus -d -p 127.0.0.1:9090:9090 quay.io/prometheus/prometheus:v2.3.2
+    mkdir -p /opt/prometheus \
+      && wget -O - https://github.com/prometheus/prometheus/releases/download/v${PROMETHEUS_VERSION}/prometheus-${PROMETHEUS_VERSION}.linux-amd64.tar.gz \
+      | tar -xvz --strip-components=1 -C /opt/prometheus
   SHELL
 
-  config.vm.provision "shell", run: "always", inline: <<-SHELL2
-    # Run node exporter
-    /vagrant/node_exporter/node_exporter &
-    
-    # Start prometheus
-    systemctl start docker
-    docker run --name prometheus -d -p 9090:9090 quay.io/prometheus/prometheus:v2.3.2
-  SHELL2
+  config.vm.provision "shell", path: "run-prometheus.sh", run: "always"
 end
