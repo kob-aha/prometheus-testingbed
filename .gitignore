@@ -1,5 +1,6 @@
 node_exporter/*
 mongodb_exporter/mongodb_exporter
 .vagrant/
+.DS_Store
 
 !node_exporter/.gitkeep
