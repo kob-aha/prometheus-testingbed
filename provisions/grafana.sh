@@ -6,7 +6,8 @@ echo "Installing grafana ${GRAFANA_VERSION}"
 
 sudo yum install -y https://s3-us-west-2.amazonaws.com/grafana-releases/release/grafana-${GRAFANA_VERSION}.x86_64.rpm
 
-cp /vagrant/reports/*.json /etc/grafana/provisioning/dashboards/
+# Configure grafana to use prometheus datasource and configured dashboards
+sed -i -e 's/;provisioning.*/provisioning = \/vagrant\/conf\/grafana/' /etc/grafana/grafana.ini
 
 # Configure grafana to start on boot and start it manually
 /sbin/chkconfig --add grafana-server
