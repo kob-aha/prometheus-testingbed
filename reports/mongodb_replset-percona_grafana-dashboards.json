@@ -688,7 +688,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|getmore|query)\"}[$interval]) or irate(mongodb_mongod_op_counters_repl_total{instance=\"$host\", type!~\"(command|getmore|query)\"}[5m])",
+          "expr": "rate(mongodb_op_counters_repl_total{instance=\"$host\", type!~\"(command|getmore|query)\"}[$interval]) or irate(mongodb_op_counters_repl_total{instance=\"$host\", type!~\"(command|getmore|query)\"}[5m])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{type}}",
@@ -792,7 +792,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "time()-mongodb_mongod_replset_oplog_tail_timestamp{instance=\"$host\"}",
+          "expr": "time()-mongodb_replset_oplog_tail_timestamp{instance=\"$host\"}",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -802,7 +802,7 @@
           "step": 300
         },
         {
-          "expr": "mongodb_mongod_replset_oplog_head_timestamp{instance=\"$host\"}-mongodb_mongod_replset_oplog_tail_timestamp{instance=\"$host\"}",
+          "expr": "mongodb_replset_oplog_head_timestamp{instance=\"$host\"}-mongodb_replset_oplog_tail_timestamp{instance=\"$host\"}",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -909,7 +909,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "(max(mongodb_mongod_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_mongod_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_mongod_replset_my_name{instance=\"$host\"})) or vector(0)",
+          "expr": "(max(mongodb_replset_member_optime_date{state=\"PRIMARY\", set=\"$replset\"}) - min(mongodb_replset_member_optime_date{state=\"SECONDARY\"} * on (name) group_left mongodb_replset_my_name{instance=\"$host\"})) or vector(0)",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Lag",
@@ -1013,7 +1013,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(changes(mongodb_mongod_replset_member_election_date{instance=\"$host\"}[$interval]))",
+          "expr": "max(changes(mongodb_replset_member_election_date{instance=\"$host\"}[$interval]))",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Count",
@@ -1120,7 +1120,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "mongodb_mongod_replset_member_uptime{instance=\"$host\"} * on (name) group_right(state) mongodb_mongod_replset_my_name",
+          "expr": "mongodb_replset_member_uptime{instance=\"$host\"} * on (name) group_right(state) mongodb_replset_my_name",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1228,7 +1228,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "time() - max(mongodb_mongod_replset_member_last_heartbeat{instance=\"$host\"}) by (name) * on (name) group_right mongodb_mongod_replset_my_name",
+          "expr": "time() - max(mongodb_replset_member_last_heartbeat{instance=\"$host\"}) by (name) * on (name) group_right mongodb_replset_my_name",
           "hide": false,
           "interval": "$interval",
           "intervalFactor": 1,
@@ -1336,7 +1336,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "mongodb_mongod_replset_member_ping_ms{instance=\"$host\"} * on (name) group_right mongodb_mongod_replset_my_name",
+          "expr": "mongodb_replset_member_ping_ms{instance=\"$host\"} * on (name) group_right mongodb_replset_my_name",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{instance}}",
@@ -1441,7 +1441,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_network_getmores_total_milliseconds{instance=\"$host\"}[5m])",
+          "expr": "rate(mongodb_metrics_repl_network_getmores_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_metrics_repl_network_getmores_total_milliseconds{instance=\"$host\"}[5m])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "{{instance}}",
@@ -1546,25 +1546,25 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_num_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_num_total{instance=\"$host\"}[5m])",
+          "expr": "rate(mongodb_metrics_repl_preload_docs_num_total{instance=\"$host\"}[$interval]) or irate(mongodb_metrics_repl_preload_docs_num_total{instance=\"$host\"}[5m])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Document Preload",
-          "metric": "mongodb_mongod_metrics_repl_preload_indexes_num_total",
+          "metric": "mongodb_metrics_repl_preload_indexes_num_total",
           "refId": "A",
           "step": 300
         },
         {
-          "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_num_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_num_total{instance=\"$host\"}[5m])",
+          "expr": "rate(mongodb_metrics_repl_preload_indexes_num_total{instance=\"$host\"}[$interval]) or irate(mongodb_metrics_repl_preload_indexes_num_total{instance=\"$host\"}[5m])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Index Preload",
-          "metric": "mongodb_mongod_metrics_repl_preload_indexes_num_total",
+          "metric": "mongodb_metrics_repl_preload_indexes_num_total",
           "refId": "B",
           "step": 300
         },
         {
-          "expr": "rate(mongodb_mongod_metrics_repl_apply_ops_total{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_ops_total{instance=\"$host\"}[5m])",
+          "expr": "rate(mongodb_metrics_repl_apply_ops_total{instance=\"$host\"}[$interval]) or irate(mongodb_metrics_repl_apply_ops_total{instance=\"$host\"}[5m])",
           "intervalFactor": 2,
           "legendFormat": "Batch Apply",
           "refId": "C",
@@ -1668,7 +1668,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_docs_total_milliseconds{instance=\"$host\"}[5m])",
+          "expr": "rate(mongodb_metrics_repl_preload_docs_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_metrics_repl_preload_docs_total_milliseconds{instance=\"$host\"}[5m])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Document Preload",
@@ -1676,20 +1676,20 @@
           "step": 300
         },
         {
-          "expr": "rate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds{instance=\"$host\"}[5m])",
+          "expr": "rate(mongodb_metrics_repl_preload_indexes_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_metrics_repl_preload_indexes_total_milliseconds{instance=\"$host\"}[5m])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Index Preload",
-          "metric": "mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds",
+          "metric": "mongodb_metrics_repl_preload_indexes_total_milliseconds",
           "refId": "B",
           "step": 300
         },
         {
-          "expr": "rate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_mongod_metrics_repl_apply_batches_total_milliseconds{instance=\"$host\"}[5m])",
+          "expr": "rate(mongodb_metrics_repl_apply_batches_total_milliseconds{instance=\"$host\"}[$interval]) or irate(mongodb_metrics_repl_apply_batches_total_milliseconds{instance=\"$host\"}[5m])",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Batch Apply",
-          "metric": "mongodb_mongod_metrics_repl_preload_indexes_total_milliseconds",
+          "metric": "mongodb_metrics_repl_preload_indexes_total_milliseconds",
           "refId": "C",
           "step": 300
         }
@@ -1791,7 +1791,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "mongodb_mongod_metrics_repl_buffer_count{instance=\"$host\"}",
+          "expr": "mongodb_metrics_repl_buffer_count{instance=\"$host\"}",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Current",
@@ -1896,7 +1896,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "mongodb_mongod_metrics_repl_buffer_size_bytes{instance=\"$host\"}",
+          "expr": "mongodb_metrics_repl_buffer_size_bytes{instance=\"$host\"}",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Used",
@@ -1904,7 +1904,7 @@
           "step": 300
         },
         {
-          "expr": "mongodb_mongod_metrics_repl_buffer_max_size_bytes{instance=\"$host\"}",
+          "expr": "mongodb_metrics_repl_buffer_max_size_bytes{instance=\"$host\"}",
           "interval": "$interval",
           "intervalFactor": 1,
           "legendFormat": "Max",
