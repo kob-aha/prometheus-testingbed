@@ -4,3 +4,8 @@ mongodb_exporter/mongodb_exporter
 .DS_Store
 
 !node_exporter/.gitkeep
+
+*.iml
+**/.gradle/
+.idea/
+passwords
