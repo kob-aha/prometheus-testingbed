@@ -16,7 +16,7 @@ public class ReadPasswordMain {
         String passwordPassword = args[2];
         String passwordAlias = args[3];
 
-        KeyStore keyStore = loadKeyStoreFromFile(pathToKeyStore, keystorePassword);
+        KeyStore keyStore = loadKeyStoreFromFile(pathToKeyStore, keystorePassword.toCharArray());
 
         System.out.println("read password " + readPasswordFromKeyStore(keyStore, passwordPassword, passwordAlias));
     }

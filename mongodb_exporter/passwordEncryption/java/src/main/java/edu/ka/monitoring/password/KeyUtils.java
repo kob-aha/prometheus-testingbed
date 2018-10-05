@@ -17,10 +17,10 @@ public class KeyUtils {
         return new FileOutputStream(file);
     }
 
-    public static KeyStore loadKeyStoreFromFile(String pathToFile, String keystorePassword)
+    public static KeyStore loadKeyStoreFromFile(String pathToFile, char[] keystorePassword)
             throws Exception {
         KeyStore keyStore = KeyStore.getInstance("JCEKS");
-        keyStore.load(getFileInputStreamFromArg(pathToFile), keystorePassword.toCharArray());
+        keyStore.load(getFileInputStreamFromArg(pathToFile), keystorePassword);
         return keyStore;
     }
 

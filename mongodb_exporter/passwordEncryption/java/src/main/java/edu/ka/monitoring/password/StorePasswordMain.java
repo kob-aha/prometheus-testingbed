@@ -23,7 +23,7 @@ public class StorePasswordMain {
         KeyStore keyStore = null;
 
         if (Files.exists(Paths.get(pathToKeyStore))) {
-            keyStore = KeyUtils.loadKeyStoreFromFile(pathToKeyStore, keyStorePassword);
+            keyStore = KeyUtils.loadKeyStoreFromFile(pathToKeyStore, keyStorePassword.toCharArray());
         } else {
             keyStore = KeyStore.getInstance("JCEKS");
             keyStore.load(null, keyStorePassword.toCharArray());

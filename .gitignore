@@ -9,3 +9,5 @@ mongodb_exporter/mongodb_exporter
 **/.gradle/
 .idea/
 passwords
+out/
+build/
